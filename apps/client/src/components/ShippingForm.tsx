@@ -1,4 +1,4 @@
-import { ShippingFormInputs, shippingFormSchema } from "@/types";
+import { ShippingFormInputs, shippingFormSchema } from "@repo/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ const ShippingForm = ({
   setShippingForm,
 }: {
   setShippingForm: (data: ShippingFormInputs) => void;
-}) => {
+}): React.ReactElement => {
   const {
     register,
     handleSubmit,

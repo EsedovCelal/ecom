@@ -53,7 +53,7 @@ const categories = [
   },
 ];
 
-const Categories = () => {
+const Categories = (): React.ReactElement => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

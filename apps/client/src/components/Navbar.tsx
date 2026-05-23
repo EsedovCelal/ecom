@@ -6,7 +6,7 @@ import ShoppingCartIcon from "./ShoppingCartIcon";
 import { Show, SignInButton, SignUpButton } from "@clerk/nextjs";
 import ProfileButton from "./ProfileButton";
 
-const Navbar = () => {
+const Navbar = (): React.ReactElement => {
   return (
     <nav className="w-full flex items-center justify-between border-b border-gray-200 pb-4">
       {/* LEFT */}

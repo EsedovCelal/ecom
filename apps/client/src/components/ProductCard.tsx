@@ -1,17 +1,21 @@
 "use client";
 
 import useCartStore from "@/stores/cartStore";
-import { ProductType } from "@/types";
+import { ProductType } from "@repo/types";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const ProductCard = ({ product }: { product: ProductType }) => {
+const ProductCard = ({
+  product,
+}: {
+  product: ProductType;
+}): React.JSX.Element => {
   const [productTypes, setProductTypes] = useState({
-    size: product.sizes[0],
-    color: product.colors[0],
+    size: product.sizes[0]!,
+    color: product.colors[0]!,
   });
 
   const { addToCart } = useCartStore();
@@ -43,11 +47,16 @@ const ProductCard = ({ product }: { product: ProductType }) => {
     <div className="shadow-lg rounded-lg overflow-hidden">
       {/* IMAGE */}
       <Link href={`/products/${product.id}`}>
-        <div className="relative aspect-[2/3]">
+        <div className="relative aspect-2/3">
           <Image
-            src={product.images?.[productTypes.color] || ""}
+            src={
+              (product.images as Record<string, string>)?.[
+                productTypes.color
+              ] || ""
+            }
             alt={product.name}
             fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover hover:scale-105 transition-all duration-300"
           />
         </div>
@@ -82,7 +91,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             <div className="flex items-center gap-2">
               {product.colors.map((color) => (
                 <div
-                  className={`cursor-pointer border-1 ${
+                  className={`cursor-pointer border ${
                     productTypes.color === color
                       ? "border-gray-400"
                       : "border-gray-200"
@@ -93,7 +102,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
                   }
                 >
                   <div
-                    className="w-[14px] h-[14px] rounded-full"
+                    className="w-3.5 h-3.5 rounded-full"
                     style={{ backgroundColor: color }}
                   />
                 </div>

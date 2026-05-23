@@ -1,4 +1,4 @@
-const OrdersPage = () => {
+const OrdersPage = (): React.ReactElement => {
   return <div className="">OrdersPage</div>;
 };
 

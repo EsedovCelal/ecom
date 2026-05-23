@@ -1,6 +1,8 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { shouldBeUser } from "./middleware/authMiddleware";
+import stripe from "./utils/stripe";
 
 const app = new Hono();
 app.use("*", clerkMiddleware());
@@ -13,15 +15,26 @@ app.get("/health", (c) => {
   });
 });
 
-app.get("/test", (c) => {
-  const auth = getAuth(c);
+/* app.post("/create-stripe-product", async (c) => {
+  const res = await stripe.products.create({
+    id: "123w",
+    name: "Test product",
+    default_price_data: {
+      currency: "usd",
+      unit_amount: 10 * 100,
+    },
+  });
 
-  if (!auth?.userId) {
-    return c.json({
-      message: "You are not logged in.",
-    });
-  }
+  return c.json(res);
 });
+
+app.get("/stripe-product-price", async (c) => {
+  const res = await stripe.prices.list({
+    product: "123",
+  });
+
+  return c.json(res);
+}); */
 
 const start = async () => {
   try {

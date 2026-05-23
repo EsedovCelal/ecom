@@ -4,7 +4,7 @@ import useCartStore from "@/stores/cartStore";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 
-const ShoppingCartIcon = () => {
+const ShoppingCartIcon = (): React.ReactElement | null => {
   const { cart, hasHydrated } = useCartStore();
 
   if (!hasHydrated) return null;

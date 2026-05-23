@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const Filter = () => {
+const Filter = (): React.ReactElement => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

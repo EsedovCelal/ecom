@@ -1,5 +1,5 @@
 import ProductInteraction from "@/components/ProductInteraction";
-import { ProductType } from "@/types";
+import { ProductType } from "@repo/types";
 import Image from "next/image";
 
 // TEMPORARY
@@ -18,6 +18,9 @@ const product: ProductType = {
     purple: "/products/1p.png",
     green: "/products/1gr.png",
   },
+  categorySlug: "Test",
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 export const generateMetadata = async ({
@@ -39,7 +42,7 @@ const ProductPage = async ({
 }: {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ color: string; size: string }>;
-}) => {
+}): Promise<React.ReactElement> => {
   const { size, color } = await searchParams;
 
   const selectedSize = size || (product.sizes[0] as string);
@@ -47,9 +50,11 @@ const ProductPage = async ({
   return (
     <div className="flex flex-col gap-4 lg:flex-row md:gap-12 mt-12">
       {/* IMAGE */}
-      <div className="w-full lg:w-5/12 relative aspect-[2/3]">
+      <div className="w-full lg:w-5/12 relative aspect-2/3">
         <Image
-          src={product.images?.[selectedColor] || ""}
+          src={
+            (product.images as Record<string, string>)?.[selectedColor] || ""
+          }
           alt={product.name}
           fill
           className="object-contain rounded-md"
