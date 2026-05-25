@@ -1,8 +1,10 @@
 "use client";
 
 import { ShippingFormInputs } from "@repo/types";
-import { PaymentElement } from "@stripe/react-stripe-js";
-import { useCheckoutElements } from "@stripe/react-stripe-js/checkout";
+import {
+  PaymentElement,
+  useCheckoutElements,
+} from "@stripe/react-stripe-js/checkout";
 import { ConfirmError } from "@stripe/stripe-js";
 import { useState } from "react";
 
@@ -41,12 +43,17 @@ const CheckoutForm: React.FC<{ shippingForm: ShippingFormInputs }> = ({
   return (
     <form>
       <PaymentElement options={{ layout: "accordion" }} />
-      <button
-        disabled={!checkoutState.checkout.canConfirm || loading}
-        onClick={handleClick}
-      >
-        {loading ? "Loading..." : "Pay"}
-      </button>
+      <div>
+        <button
+          type="button"
+          /*           disabled={!checkoutState.checkout.canConfirm || loading} */
+          onClick={handleClick}
+          className="ring-1 ring-gray-200 shadow-lg rounded-md px-2 py-1 text-sm cursor-pointer hover:text-white hover:bg-black transition-all duration-300 flex items-center gap-2"
+        >
+          {loading ? "Loading..." : "Pay"}
+        </button>
+      </div>
+
       {error && <div>{error.message}</div>}
     </form>
   );

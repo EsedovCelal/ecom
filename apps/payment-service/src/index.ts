@@ -8,8 +8,6 @@ const app = new Hono();
 app.use("*", clerkMiddleware());
 app.use("*", cors({ origin: process.env.LOCAL_URL }));
 
-console.log(process.env.LOCAL_URL);
-
 app.get("/health", (c) => {
   return c.json({
     status: "ok",

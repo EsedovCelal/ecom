@@ -9,28 +9,26 @@ import CheckoutForm from "./CheckoutForm";
 import useCartStore from "@/stores/cartStore";
 
 const stripe = loadStripe(
-  "pk_test_51TaSYCDiYoAvrGX6R9x5KwkpQYzOHwKpMwX0ziTjfKQUB7KZ56NVQNtxL15WYHt2MqMzfxzjX0oKTtV7lPmZi6ap00eWPGh3Cb",
+  "pk_test_51TOiLDIK0MiHEuwXYd8H66pH7LRoyoKcuQUF6SnHlehOvp45W0pOw3Hb3k5he0Cog2qMSJUCmVEgFKfjwPrGaqR400yAIlNnEd",
 );
 
 const fetchClientSecret = async (
-  cart: CartItemType,
+  cart: CartItemType[],
   token: string,
 ): Promise<string> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/create-checkout-session`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        cart,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+  const baseUrl = process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL;
+  const response = await fetch(`${baseUrl}/sessions/create-checkout-session`, {
+    method: "POST",
+    body: JSON.stringify({
+      cart,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   const json = await response.json();
-  return json.client_secret;
+  return json.checkoutSessionClientSecret;
 };
 
 const StripePaymentForm: React.FC<{ shippingForm: ShippingFormInputs }> = ({
@@ -48,13 +46,11 @@ const StripePaymentForm: React.FC<{ shippingForm: ShippingFormInputs }> = ({
   useEffect(() => {
     if (!token) return;
     fetchClientSecret(cart, token).then((secret) => setClientSecret(secret));
-  });
+  }, [token, cart]);
 
   if (!token || !clientSecret) {
     return <div>Loading...</div>;
   }
-
-  console.log(process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL);
 
   return (
     <CheckoutElementsProvider stripe={stripe} options={{ clientSecret }}>

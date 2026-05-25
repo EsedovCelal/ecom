@@ -21,7 +21,7 @@ export const CreateStripeProduct = async (item: StripeProductType) => {
 export const GetStripeProductPrice = async (productId: number) => {
   try {
     const res = await stripe.prices.list({
-      product: "123",
+      product: productId.toString(),
     });
     return res.data[0]?.unit_amount;
   } catch (error) {

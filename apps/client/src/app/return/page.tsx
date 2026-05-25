@@ -1,0 +1,27 @@
+import Link from "next/link";
+
+const ReturnPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ sessionId: string | undefined }>;
+}) => {
+  const sessionId = (await searchParams)?.sessionId;
+  console.log("Session ID:", sessionId);
+
+  if (!sessionId) {
+    return <div>No session ID found</div>;
+  }
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/sessionId`,
+  );
+  const data = await res.json();
+  return (
+    <div>
+      <h1>Payment {data.status}</h1>
+      <p>Payment status {data.payment_status}</p>
+      <Link href="/orders">See your orders</Link>
+    </div>
+  );
+};
+
+export default ReturnPage;
