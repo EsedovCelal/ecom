@@ -3,6 +3,8 @@ import { Hono } from "hono";
 import { clerkMiddleware } from "@hono/clerk-auth";
 import sessionRoute from "./routes/session.route";
 import { cors } from "hono/cors";
+import webhookRoute from "./routes/webhooks.route";
+import { consumer, producer } from "./utils/kafka";
 
 const app = new Hono();
 app.use("*", clerkMiddleware());
@@ -17,6 +19,7 @@ app.get("/health", (c) => {
 });
 
 app.route("/sessions", sessionRoute);
+app.route("/webhooks", webhookRoute);
 
 /* app.post("/create-stripe-product", async (c) => {
   const res = await stripe.products.create({
@@ -41,6 +44,7 @@ app.get("/stripe-product-price", async (c) => {
 
 const start = async () => {
   try {
+    await Promise.all([producer.connect(), consumer.connect()]);
     serve(
       {
         fetch: app.fetch,

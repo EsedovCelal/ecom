@@ -3,16 +3,15 @@ import Link from "next/link";
 const ReturnPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ sessionId: string | undefined }>;
+  searchParams: Promise<{ session_id: string | undefined }>;
 }) => {
-  const sessionId = (await searchParams)?.sessionId;
-  console.log("Session ID:", sessionId);
+  const session_id = (await searchParams)?.session_id;
 
-  if (!sessionId) {
+  if (!session_id) {
     return <div>No session ID found</div>;
   }
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/sessionId`,
+    `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/${session_id}`,
   );
   const data = await res.json();
   return (

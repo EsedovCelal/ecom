@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import stripe from "../utils/stripe";
 import { shouldBeUser } from "../middleware/authMiddleware";
 import { CartItemsType } from "@repo/types";
-import { GetStripeProductPrice } from "../utils/StripeProduct";
+import { GetStripeProductPrice } from "../utils/stripeProduct";
 
 const sessionRoute = new Hono();
 
@@ -43,10 +43,9 @@ sessionRoute.post("/create-checkout-session", shouldBeUser, async (c) => {
   }
 });
 
-sessionRoute.get("/sessionId", async (c) => {
-  const sessionId = c.req.param();
+sessionRoute.get("/:sessionId", async (c) => {
+  const sessionId = c.req.param("sessionId");
   const session = await stripe.checkout.sessions.retrieve(sessionId as string);
-  console.log(session);
 
   return c.json({
     status: session.status,
